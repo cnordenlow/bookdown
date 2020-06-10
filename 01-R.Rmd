@@ -497,6 +497,47 @@ exposure_graph <- ggplot(df, aes(x=value,y=rand)) +
 
 
 
+### Different tables
+
+**Create table with kableExtra**
+  
+*Create table with different colors for pos / neg numbers*
+ 
+```{r, echo=T, eval=F}
+library(tidyverse)
+library(kableExtra)
+
+
+df <- tibble(
+  type = c("gov_bond", "ssa", "ssa", "gov_bond","ssa", "ssa", "gov_bond", "gov_bond", "gov_bond", "ssa"),
+  maturity_bucket = as.integer(runif(10, min =1, max=6)),
+  diff_bm = runif(10, min = -10, max = 10)
+)
+
+sum_type <- df %>%
+  group_by(type, maturity_bucket)%>%
+  summarise(
+    diff_exposure = round(sum(diff_bm),1)
+  )
+
+
+## Create table with green for positive, red for negative
+sum_table <- sum_type%>%
+  
+  mutate(
+    diff_exposure = ifelse(diff_exposure < 0,
+                      cell_spec(diff_exposure, "html", color = "red", bold = T),
+                      cell_spec(diff_exposure, "html", color = "green", italic = T)))%>%
+  
+  kable("html", escape = F, format.args=list(big.mark=" ", scientific=F)) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = F, position= "right", fixed_thead = T)
+
+sum_table
+``` 
+
+
+
+
 ## Misc
 
 
