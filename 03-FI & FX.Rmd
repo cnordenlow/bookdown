@@ -125,3 +125,7 @@ Maturity <- "2023-04-30"
   calculate_disc_from_yield(yield, maturity_date, settlement_date, day_count)
 ```   
   
+
+
+## Foreign Exchange
+
